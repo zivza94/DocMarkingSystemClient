@@ -13,6 +13,7 @@ import {MarkerShape} from 'src/app/DTO/Markers/Shapes/marker-shape'
 import {Rectangle} from 'src/app/DTO/Markers/Shapes/rectangle'
 import {Ellipse} from 'src/app/DTO/Markers/Shapes/ellipse'
 import { environment } from 'src/environments/environment';
+import { AlertService } from 'src/app/Services/alert.service';
 
 
 @Component({
@@ -41,7 +42,7 @@ export class DrawingMarkersComponent implements OnInit {
 
   
   constructor(private location:Location,private sharedDataService:SharedDataService,
-    private createMarkerService:CreateMarkerService) { 
+    private createMarkerService:CreateMarkerService,private alertService:AlertService) { 
     this.poly = new Subject<point>() 
     this.switchSubject = new Subject<point>() 
     this.mDown = false
@@ -58,16 +59,16 @@ export class DrawingMarkersComponent implements OnInit {
       response => console.log(response.request.markerID + " has created")
     ))
     this.subscriptions.push(this.createMarkerService.onCreateMarkerInvalidDocID.subscribe(
-      response => console.log(response.request.docID + " invalid doc")
+      response => this.alertService.openModal("Create marker" , "Invalid document id")
     ))
     this.subscriptions.push(this.createMarkerService.onCreateMarkerInvalidMarkerType.subscribe(
-      response => console.log(response.request.markerType + " invalid markerType")
+      response => this.alertService.openModal("Create marker" , "Invalid markerType")
     ))
     this.subscriptions.push(this.createMarkerService.onCreateMarkerInvalidUserID.subscribe(
-      response => console.log(response.request.userID + " invalid userID")
+      response => this.alertService.openModal("Create marker" , "Invalid user id")
     ))
     this.subscriptions.push(this.createMarkerService.onResponseError.subscribe(
-      response => console.log("error in createMarker, " + response.message)
+      response => this.alertService.openModal("Create marker" , response.message)
     ))
   }
   ngOnDestroy(): void{

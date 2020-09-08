@@ -5,6 +5,7 @@ import { Location } from '@angular/common';
 import { Observable, Subscription } from 'rxjs';
 import { Form, FormGroup } from '@angular/forms';
 import { CreateDocumentRequest } from 'src/app/DTO/Documents/CreateDocument/create-document-request';
+import { AlertService } from 'src/app/Services/alert.service';
 @Component({
   selector: 'app-add-document',
   templateUrl: './add-document.component.html',
@@ -18,7 +19,7 @@ export class AddDocumentComponent implements OnInit {
   subscriptions:Array<Subscription> = new Array<Subscription>()
   createDocument:FormGroup
   constructor(private sharedDataService:SharedDataService, private createDocumentService:CreateDocumentService,
-    private location:Location) { }
+    private location:Location,private alertService:AlertService) { }
 
   ngOnDestroy(): void{
     this.subscriptions.forEach( subscription => subscription.unsubscribe())
@@ -34,11 +35,11 @@ export class AddDocumentComponent implements OnInit {
     ))
     this.subscriptions.push(
       this.createDocumentService.onCreateDocumentInvalidData.subscribe(
-      response => console.log("invalid data", response)
+      response =>  this.alertService.openModal("Create Document" , "Invalid data")
     ))
     this.subscriptions.push(
       this.createDocumentService.onResponseError.subscribe(
-      response => console.log("Error in add document,  ", response.message)
+      response =>  this.alertService.openModal("Create Document" , response.message)
     ))
   }
   onCancel(){

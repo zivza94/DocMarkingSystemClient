@@ -9,6 +9,7 @@ import { RemoveDocumentService } from 'src/app/Services/Document/remove-document
 import { RemoveDocumentRequest } from 'src/app/DTO/Documents/RemoveDocument/remove-document-request';
 import { Location } from '@angular/common';
 import { Subscription } from 'rxjs';
+import { AlertService } from 'src/app/Services/alert.service';
 
 @Component({
   selector: 'app-documents-list',
@@ -23,7 +24,8 @@ export class DocumentsListComponent implements OnInit {
   constructor(private sharedDataService:SharedDataService,
              private getDocumentsService:GetDocumentsService,
              private router:Router,
-             private location:Location) { }
+             private location:Location,
+             private alertService:AlertService) { }
 
   ngOnDestroy(): void{
     this.subscriptions.forEach( subscription => subscription.unsubscribe())
@@ -41,11 +43,11 @@ export class DocumentsListComponent implements OnInit {
     ))
     this.subscriptions.push(
       this.getDocumentsService.onGetDocumentsInvalidUserID.subscribe(
-      response => console.log("Invalid userID",response.request.userID)
+      response => this.alertService.openModal("Get Document" , "Invalid user id")
     ))
     this.subscriptions.push(
       this.getDocumentsService.onResponseError.subscribe(
-      error => console.log(error.message)
+      response => this.alertService.openModal("Get Document" , response.message)
     ))
   }
   goBack(){

@@ -4,6 +4,7 @@ import { RemoveDocumentRequest } from 'src/app/DTO/Documents/RemoveDocument/remo
 import { Location } from '@angular/common';
 import { Document } from 'src/app/DTO/Documents/document';
 import { Subscription } from 'rxjs';
+import { AlertService } from 'src/app/Services/alert.service';
 
 @Component({
   selector: 'app-remove-document',
@@ -17,7 +18,8 @@ export class RemoveDocumentComponent implements OnInit {
   @Output() public onRemoved = new EventEmitter();
   subscriptions:Array<Subscription> = new Array<Subscription>()
 
-  constructor(private removeDocumentService:RemoveDocumentService) { }
+  constructor(private removeDocumentService:RemoveDocumentService,
+              private alertService:AlertService) { }
 
   
   ngOnDestroy(): void{
@@ -32,10 +34,10 @@ export class RemoveDocumentComponent implements OnInit {
       }
     ))
     this.subscriptions.push(this.removeDocumentService.onRemoveDocumentInvalidDocID.subscribe(
-      response =>console.log("invalid doc id")
+      response => this.alertService.openModal("Remove Document" , "Invalid document id")
     ))
     this.subscriptions.push(this.removeDocumentService.onResponseError.subscribe(
-      response => console.log(response.message)
+      response => this.alertService.openModal("Remove Document" , response.message)
     ))
   }
   removeDocument(){

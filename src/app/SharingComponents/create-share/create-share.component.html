@@ -1,1 +1,16 @@
-<p>create-share works!</p>
+<body>
+    <div class="container">
+        <div>
+            <label for="userIDToShare">User id to share:</label>
+            <input type="text" [(ngModel)]="userIDToShare" placeholder="Enter the user id you want to share">
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <button type="submit" class="btn submit btn-primary" (click)="onSubmit()"> Create Share</button>
+            </div>
+            <div class="col-md-4">
+                <button type="button" class="btn btn-primary" (click)="onCancel()"> Cancel</button>
+            </div>
+        </div>
+    </div>
+</body>>

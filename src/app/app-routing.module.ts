@@ -9,6 +9,7 @@ import { AddDocumentComponent } from './DocumentsComponents/add-document/add-doc
 import { EditDocumentComponent } from './DocumentsComponents/edit-document/edit-document.component';
 import { MarkersListComponent } from './MarkersComponents/markers-list/markers-list.component';
 import { RemoveMarkerComponent } from './MarkersComponents/remove-marker/remove-marker.component';
+import { CreateShareComponent } from './SharingComponents/create-share/create-share.component';
 
 const routes: Routes = [
   { path: "", component: HomeComponent },
@@ -20,7 +21,8 @@ const routes: Routes = [
   {path:"adddocument",component:AddDocumentComponent},
   {path:"editDocument",component:EditDocumentComponent},
   {path: "markersList",component:MarkersListComponent},
-  {path: "removeMarker",component:RemoveMarkerComponent}
+  {path: "removeMarker",component:RemoveMarkerComponent},
+  {path: "shareDocument",component:CreateShareComponent}
 
 ];
 

@@ -7,10 +7,13 @@ import{ MAT_DIALOG_DATA} from '@angular/material/dialog'
   styleUrls: ['./alert-system.component.css']
 })
 export class AlertSystemComponent implements OnInit {
-  title:string
-  message:string
+  modalTitle: string;
+  modalMessage: string;
   
-  constructor(@Inject(MAT_DIALOG_DATA) public data:any) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public data:any) {
+    this.modalTitle = data.title;
+    this.modalMessage = data.message;
+   }
 
   ngOnInit(): void {
   }

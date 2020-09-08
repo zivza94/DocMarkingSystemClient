@@ -3,6 +3,7 @@ import { Marker } from 'src/app/DTO/Markers/marker';
 import { Subscription } from 'rxjs';
 import {RemoveMarkerService} from 'src/app/Services/Marker/remove-marker.service'
 import { RemoveMarkerRequest } from 'src/app/DTO/Markers/remove-marker-request';
+import { AlertService } from 'src/app/Services/alert.service';
 
 @Component({
   selector: 'app-remove-marker',
@@ -15,7 +16,8 @@ export class RemoveMarkerComponent implements OnInit {
   @Output() public onRemoved = new EventEmitter();
   subscriptions:Array<Subscription> = new Array<Subscription>()
 
-  constructor(private removeMarkerService:RemoveMarkerService) { }
+  constructor(private removeMarkerService:RemoveMarkerService,
+              private alertService:AlertService) { }
 
   ngOnDestroy(): void{
     this.subscriptions.forEach( subscription => subscription.unsubscribe())
@@ -29,10 +31,10 @@ export class RemoveMarkerComponent implements OnInit {
       }
     ))
     this.subscriptions.push(this.removeMarkerService.onRemoveMarkerInvalidID.subscribe(
-      response =>console.log("invalid marker id")
+      response =>this.alertService.openModal("Remove marker" , "Invalid document id")
     ))
     this.subscriptions.push(this.removeMarkerService.onResponseError.subscribe(
-      response => console.log(response.message)
+      response => this.alertService.openModal("Remove marker" , response.error )
     ))
   }
   removeMarker(){

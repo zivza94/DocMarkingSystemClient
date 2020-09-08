@@ -11,6 +11,7 @@ export class CreateShareService {
   ResponseSubjects: {[responseID:string]:Subject<any>} = {
     CreateShareResponseOK: new Subject<any>(),
     CreateShareResponseInvalidID:new Subject<any>(),
+    CreateShareResponseNotAuthorized:new Subject<any>(),
     AppResponseError: new Subject<any>()
   }
   
@@ -21,6 +22,9 @@ export class CreateShareService {
   }
   get onCreateShareInvalidID(){
     return this.ResponseSubjects.CreateShareResponseInvalidID
+  }
+  get onCreateShareNotAuthorized(){
+    return this.ResponseSubjects.CreateShareResponseNotAuthorized
   }
   get onResponseError(){
     return this.ResponseSubjects.AppResponseError

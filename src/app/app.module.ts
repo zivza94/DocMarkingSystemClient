@@ -34,6 +34,7 @@ import { RemoveShareComponent } from './SharingComponents/remove-share/remove-sh
 import { ShareManagerComponent } from './SharingComponents/share-manager/share-manager.component';
 import { CreateShareComponent } from './SharingComponents/create-share/create-share.component';
 import { AlertSystemComponent } from './alert-system/alert-system.component'
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
@@ -63,7 +64,8 @@ import { AlertSystemComponent } from './alert-system/alert-system.component'
     FormsModule,
     BrowserAnimationsModule,
     MatIconModule,
-    HttpClientModule
+    HttpClientModule,
+    MatDialogModule
   ],
   providers: [
     {provide: UsersCommService, useClass:ApiUsersCommService},

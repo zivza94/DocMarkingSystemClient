@@ -6,6 +6,7 @@ import { GetMarkersRequest } from 'src/app/DTO/Markers/get-markers-request';
 import { Document } from 'src/app/DTO/Documents/document';
 import { SharedDataService } from 'src/app/Services/shared-data.service';
 import { environment} from 'src/environments/environment'
+import { AlertService } from 'src/app/Services/alert.service';
 @Component({
   selector: 'app-markers-list',
   templateUrl: './markers-list.component.html',
@@ -21,7 +22,8 @@ export class MarkersListComponent implements OnInit {
   @Output() onUpdateMarkers = new EventEmitter();
   @Output() onSelectMarker = new EventEmitter();
 
-  constructor(private getMarkersService:GetMarkersService,private sharedDataService:SharedDataService) { }
+  constructor(private getMarkersService:GetMarkersService,private sharedDataService:SharedDataService,
+              private alertService:AlertService) { }
   ngOnDestroy(): void{
     this.subscriptions.forEach( subscription => subscription.unsubscribe())
     this.subject.close()
@@ -53,12 +55,12 @@ export class MarkersListComponent implements OnInit {
     this.subscriptions.push(
       this.getMarkersService.onGetMarkersInvalidDocID.subscribe(
       response => {
-        console.log("Invalid docID")
+        this.alertService.openModal("Get markers" , "Invalid document id")
       }
     ))
     this.subscriptions.push(
       this.getMarkersService.onResponseError.subscribe(
-      error => console.log(error.message)
+      response => this.alertService.openModal("Get markers" , response.message)
     ))
   }
 
@@ -73,6 +75,7 @@ export class MarkersListComponent implements OnInit {
   }
   removed(event){
     console.log(event.markerID +" has been removed")
+    this.onSelectMarker.emit(this.selectedMarker)
     this.getMarkers()
   }
 

@@ -6,6 +6,7 @@ import { CreateUserRequest } from '../DTO/Users/CreateUser/create-user-request';
 import { SharedDataService } from '../Services/shared-data.service';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { AlertService } from '../Services/alert.service';
 
 @Component({
   selector: 'app-register',
@@ -20,7 +21,7 @@ export class RegisterComponent implements OnInit {
   subscriptions:Array<Subscription> = new Array<Subscription>()
   constructor(private createUserService: CreateUserService,
     private sharedDataService:SharedDataService,
-    private router:Router ) { }
+    private router:Router,private alertService:AlertService ) { }
   ngOnDestroy(): void{
     this.subscriptions.forEach( subscription => subscription.unsubscribe())
   }
@@ -40,10 +41,10 @@ export class RegisterComponent implements OnInit {
       }
     ))
     this.subscriptions.push(this.createUserService.onCreateUserExist.subscribe(
-      response => console.log("User exist", response.request)
+      response => this.alertService.openModal("Register" , "User Exists")
     ))
     this.subscriptions.push(this.createUserService.onResponseError.subscribe(
-      response => console.log("Error accord",response.message )
+      response =>  this.alertService.openModal("Register" , response.message)
     ))
 
   }

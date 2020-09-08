@@ -5,6 +5,7 @@ import {LoginService} from '../Services/User/login.service'
 import { LoginRequest } from '../DTO/Users/Login/login-request';
 import {SharedDataService} from "../Services/shared-data.service";
 import { Subscription } from 'rxjs';
+import {AlertService} from 'src/app/Services/alert.service'
 
 @Component({
   selector: 'app-login',
@@ -17,7 +18,8 @@ export class LoginComponent implements OnInit {
   errorMsg: string = ""
   userID: string
   subscriptions:Array<Subscription> = new Array<Subscription>()
-  constructor(private loginService:LoginService, private router:Router, private sharedDataService:SharedDataService) {
+  constructor(private loginService:LoginService, private router:Router, private sharedDataService:SharedDataService,
+    private alertService:AlertService) {
     console.log("Constructor")
    }
   
@@ -43,11 +45,12 @@ export class LoginComponent implements OnInit {
     this.subscriptions.push(this.loginService.onLoginInvalidUserID.subscribe(
       response => {
         this.errorMsg = "Invalid user id"
+        this.alertService.openModal("Login",this.errorMsg)
         console.log("Invalid user ID", response.request)
       }
     ))
     this.subscriptions.push(this.loginService.onAppError.subscribe(
-      response => console.log("Error accord",response.message )
+      response => this.alertService.openModal("Login" , response.message)
     ))
 
   }
