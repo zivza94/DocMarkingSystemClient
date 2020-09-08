@@ -1,0 +1,25 @@
+{
+    "/api/User/*": {
+        "target": "https://localhost:5001",
+        "secure": false
+        
+    },
+    "/api/Document/*": {
+        "target": "https://localhost:5001",
+        "secure": false
+        
+    },
+    "/api/UploadFile/*": {
+        "target": "https://localhost:5001",
+        "secure": false
+        
+    },"/api/Marker/*": {
+        "target": "https://localhost:5001",
+        "secure": false
+        
+    },"/api/Sharing/*": {
+        "target": "https://localhost:5001",
+        "secure": false
+        
+    }
+}

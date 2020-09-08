@@ -1,0 +1,34 @@
+<h1> Hello    {{userID}}</h1>
+<h2> Welcome to documents list</h2>
+<div class="fixed-top backbtn float-right">
+    <button type="button " class="btn btn-primary float-right back-btn" (click)="goBack()">Go back</button>
+</div>
+
+<div id="accordion">
+        <div class="card" *ngFor="let doc of documents; let i = index">
+            <div class="card-header" [attr.id]="'heading' +i">
+                <h5 class="mb-0">
+                <button class="btn btn-link collapsed" (click) = "onSelect(doc)" data-toggle="collapse" [attr.data-target]="'#collapse'+ i" aria-expanded="false" [attr.aria-controls]="'collapse' +i">
+                    {{doc.documentName}}
+                </button> &nbsp; &nbsp;
+                <img [src]="createImgPath(doc.imageURL)" alt="profile picture" style="width:60px; height:60px;"> &nbsp; &nbsp;
+                <span *ngIf="doc.userID == userID">Owner</span>
+                <span *ngIf="doc.userID != userID">Shared</span>
+                </h5>
+            </div>
+            <div [attr.id]="'collapse' + i" class="collapse" [attr.aria-labelledby]="'heading' + i" data-parent="#accordion">
+                <div *ngIf="selectedDoc == doc" class="card-body">
+                  <button class="btn btn-primary editbtn" (click)="editDocument(doc)"> <mat-icon>edit</mat-icon></button>
+                  <button class="btn btn-secondary sharebtn" [disabled]="doc.userID != userID" (click)="shareDocument(doc)"><mat-icon>share</mat-icon></button>
+                  <app-remove-document [doc]="doc" [userID]="userID" (onRemoved) ="removed($event)"></app-remove-document>
+                </div>
+            </div>
+            
+        </div>
+        
+</div>
+
+<div class="fixed-bottom addbtn float-right">
+    <button type="button " class="btn btn-primary float-right add-btn" routerLink="/adddocument">Add Document</button>
+</div>
+

@@ -3,7 +3,13 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  markerWs: "wss:localhost:5001/ws/marker",
+  userApi: "https:localhost:5001",
+  documentApi: "https:localhost:5001",
+  markerApi: "https:localhost:5001",
+  sharingApi: "https:localhost:5001"
+
 };
 
 /*

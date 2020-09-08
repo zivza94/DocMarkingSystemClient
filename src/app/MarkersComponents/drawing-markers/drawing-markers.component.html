@@ -1,0 +1,25 @@
+<div #container>
+    <div #row>
+        <div class="col-md-4">
+            <button #btn (click)="selectShape('Ellipse')">Ellipse</button>
+            <button #btn (click)="selectShape('Rectangle')">Rectangle</button>
+            <br/>
+            <br/>
+            <br/>    
+        </div>
+    </div>
+    <div class ="row"></div>
+    <div class="row">
+        <div class="canvasCol col">
+            <div #container id="container"  style = 'height:800px;width:800px; background-color: powderblue'>
+                <img [src]="createImgPath()" alt="profile picture" style="width:800px; height:800px;">
+                <canvas #shapeCanvas class='canvas' ></canvas>
+                <canvas #drawingCanvas class='canvas' ></canvas>
+            </div>
+        </div>
+
+        <div class="col">
+            <app-markers-list (onUpdateMarkers) = "updateMarkers($event)" (onSelectMarker) = "selectMarker($event)"></app-markers-list>
+        </div>
+    </div>
+</div>

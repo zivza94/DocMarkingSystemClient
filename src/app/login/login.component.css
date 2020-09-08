@@ -1,0 +1,50 @@
+body{
+    
+    background-image: url("https://libraryeuroparl.files.wordpress.com/2019/10/eprs-briefing-642240-reform-service-of-documents-regulation-final.jpg?w=300&h=169");
+    height: 800px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.container{
+    height: 100%;
+    align-content: center;
+}
+
+.card{
+    height: 370px;
+    margin-top: auto;
+    margin-bottom: auto;
+    width: 400px;
+    background-color: rgb(2, 5, 31);
+}
+
+label{
+    color: white;
+}
+.card-header h2{
+    color: white;
+    font-size: x-large;
+}
+
+.login_btn{
+    margin-top: 20px;
+    color: white;
+    background-color: rgb(68, 55, 255);
+    width: 100px;
+}
+
+.login_btn:hover{
+    color: black;
+    background-color: white;
+}
+
+h4 {
+    color: grey;
+    font-size: small;
+}
+
+.error-msg{
+    color: red;
+}

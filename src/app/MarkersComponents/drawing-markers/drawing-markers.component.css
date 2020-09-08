@@ -1,0 +1,3 @@
+#container { position: relative;}
+.canvas { position: absolute; top: 0; left: 0; }
+.canvasCol{width: 800px; height: 800px;}

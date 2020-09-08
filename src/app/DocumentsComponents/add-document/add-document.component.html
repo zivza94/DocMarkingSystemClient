@@ -1,0 +1,17 @@
+<body>
+    <div class="container">
+            <div class="form-group">
+            <label for="fileName">File Name:</label>
+            <input type="text" class="form-control" id="fileName" [(ngModel)]="fileName" placeholder="Enter file name to save in another name">
+            </div>
+            <app-upload-file (onUploadFinished) ="uploadFinished($event)" (onFileName) = "updateFileName($event)"></app-upload-file>
+            <div class="row">
+                <div class="col-md-4">
+                    <button type="submit" class="btn submit btn-primary" (click)="onSubmit()"> Create Document</button>
+                </div>
+                <div class="col-md-4">
+                    <button type="button" class="btn btn-primary" (click)="onCancel()"> Cancel</button>
+                </div>
+            </div>
+    </div>
+</body>

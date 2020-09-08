@@ -1,0 +1,21 @@
+Markers List:
+<br/>
+<div id="accordion">
+    <div class="card" *ngFor="let marker of markers; let i = index">
+        <div class="card-header" [attr.id]="'heading' +i">
+            <h5 class="mb-0">
+            <button class="btn btn-link collapsed" (click) = "onSelect(marker)" data-toggle="collapse" [attr.data-target]="'#collapse'+ i" 
+            aria-expanded="false" [attr.aria-controls]="'collapse' +i">
+                {{marker.markerID}}
+            </button>
+            </h5>
+        </div>
+        <div [attr.id]="'collapse' + i" class="collapse" [attr.aria-labelledby]="'heading' + i" data-parent="#accordion">
+            <div *ngIf="selectedMarker == marker" class="card-body">
+              <app-remove-marker [marker]="marker" [userID]="userID" (onRemoved) ="removed($event)"></app-remove-marker>
+            </div>
+        </div>
+        
+    </div>
+    
+</div>
