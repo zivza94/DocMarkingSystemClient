@@ -10,7 +10,7 @@ import { RemoveDocumentRequest } from 'src/app/DTO/Documents/RemoveDocument/remo
 import { Location } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { AlertService } from 'src/app/Services/alert.service';
-
+import {AuthService} from 'src/app/Services/auth.service'
 @Component({
   selector: 'app-documents-list',
   templateUrl: './documents-list.component.html',
@@ -25,13 +25,17 @@ export class DocumentsListComponent implements OnInit {
              private getDocumentsService:GetDocumentsService,
              private router:Router,
              private location:Location,
-             private alertService:AlertService) { }
+             private alertService:AlertService,
+             private authService:AuthService) { }
 
   ngOnDestroy(): void{
     this.subscriptions.forEach( subscription => subscription.unsubscribe())
   }
   ngOnInit(): void {
     this.selectedDoc = null
+    if(this.authService.isLoggedIn == false){
+      this.router.navigate(['login'])
+    }
     this.subscriptions.push(this.sharedDataService.currentUserID.subscribe(
       id => {
         this.userID = id
@@ -65,8 +69,12 @@ export class DocumentsListComponent implements OnInit {
     var image = `https://localhost:5001/${imageURL}`;
     return image
   }
-  removed(event){
+  removedDoc(event){
     console.log(event.documentName +" has been removed")
+    this.getDocuments()
+  }
+  removedShare(event){
+    console.log(event + "removed share")
     this.getDocuments()
   }
   editDocument(doc:Document){
@@ -75,7 +83,7 @@ export class DocumentsListComponent implements OnInit {
   }
   shareDocument(doc:Document){
     this.sharedDataService.changeDoc(doc)
-    this.router.navigate(['shareDocument'])
+    this.router.navigate(['shareManager'])
   }
 
 }

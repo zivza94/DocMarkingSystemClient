@@ -1,0 +1,16 @@
+.addbtn{
+    margin-bottom: 50px;
+    margin-right: 50px; 
+}
+.backbtn{
+    margin-top: 80px;
+    margin-right: 50px;
+}
+body{
+    
+    background-image: url("https://www.nhsresearchscotland.org.uk/uploads/tinymce/shareLogo.png");
+    height: 800px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}

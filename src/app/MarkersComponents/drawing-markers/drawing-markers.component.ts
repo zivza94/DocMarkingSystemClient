@@ -14,6 +14,8 @@ import {Rectangle} from 'src/app/DTO/Markers/Shapes/rectangle'
 import {Ellipse} from 'src/app/DTO/Markers/Shapes/ellipse'
 import { environment } from 'src/environments/environment';
 import { AlertService } from 'src/app/Services/alert.service';
+import { Router } from '@angular/router';
+import { AuthService } from 'src/app/Services/auth.service';
 
 
 @Component({
@@ -42,18 +44,31 @@ export class DrawingMarkersComponent implements OnInit {
 
   
   constructor(private location:Location,private sharedDataService:SharedDataService,
-    private createMarkerService:CreateMarkerService,private alertService:AlertService) { 
+    private createMarkerService:CreateMarkerService,private alertService:AlertService,
+    private router:Router,private authService:AuthService) { 
     this.poly = new Subject<point>() 
     this.switchSubject = new Subject<point>() 
     this.mDown = false
   }
 
   ngOnInit(): void {
+    if(!this.authService.isLoggedIn){
+      this.router.navigate['home']
+    }
     this.subscriptions.push(this.sharedDataService.currentDoc.subscribe(
-      doc => this.doc = doc
+      doc =>{
+        if(doc == undefined){
+          this.router.navigate(['login'])
+        }else{
+          this.doc = doc
+        }
+      } 
     ))
     this.subscriptions.push(this.sharedDataService.currentUserID.subscribe(
-      userID => this.userID = userID
+      userID => {
+        this.userID = userID
+        
+      }
     ))
     this.subscriptions.push(this.createMarkerService.onCreateMarkerOK.subscribe(
       response => console.log(response.request.markerID + " has created")

@@ -6,6 +6,8 @@ import { Observable, Subscription } from 'rxjs';
 import { Form, FormGroup } from '@angular/forms';
 import { CreateDocumentRequest } from 'src/app/DTO/Documents/CreateDocument/create-document-request';
 import { AlertService } from 'src/app/Services/alert.service';
+import { Router } from '@angular/router';
+import { AuthService } from 'src/app/Services/auth.service';
 @Component({
   selector: 'app-add-document',
   templateUrl: './add-document.component.html',
@@ -19,15 +21,20 @@ export class AddDocumentComponent implements OnInit {
   subscriptions:Array<Subscription> = new Array<Subscription>()
   createDocument:FormGroup
   constructor(private sharedDataService:SharedDataService, private createDocumentService:CreateDocumentService,
-    private location:Location,private alertService:AlertService) { }
+    private location:Location,private alertService:AlertService,private router:Router,private authService:AuthService) { }
 
   ngOnDestroy(): void{
     this.subscriptions.forEach( subscription => subscription.unsubscribe())
   }
   ngOnInit(): void {
+    if(!this.authService.isLoggedIn){
+      this.router.navigate(['home'])
+    }
     this.subscriptions.push(
       this.sharedDataService.currentUserID.subscribe(
-      id => this.userID = id
+      id => {
+        this.userID = id
+    }
     ))
     this.subscriptions.push(
       this.createDocumentService.onCreateDocumentOK.subscribe(

@@ -10,6 +10,9 @@ import { EditDocumentComponent } from './DocumentsComponents/edit-document/edit-
 import { MarkersListComponent } from './MarkersComponents/markers-list/markers-list.component';
 import { RemoveMarkerComponent } from './MarkersComponents/remove-marker/remove-marker.component';
 import { CreateShareComponent } from './SharingComponents/create-share/create-share.component';
+import { ShareManagerComponent } from './SharingComponents/share-manager/share-manager.component';
+import { RemoveShareComponent } from './SharingComponents/remove-share/remove-share.component';
+import {LogoutComponent} from './logout/logout.component'
 
 const routes: Routes = [
   { path: "", component: HomeComponent },
@@ -22,7 +25,10 @@ const routes: Routes = [
   {path:"editDocument",component:EditDocumentComponent},
   {path: "markersList",component:MarkersListComponent},
   {path: "removeMarker",component:RemoveMarkerComponent},
-  {path: "shareDocument",component:CreateShareComponent}
+  {path: "shareDocument",component:CreateShareComponent},
+  {path: "shareManager",component:ShareManagerComponent},
+  {path: "removeShare",component:RemoveShareComponent},
+  {path: "logout",component:LogoutComponent}
 
 ];
 

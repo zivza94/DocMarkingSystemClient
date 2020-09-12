@@ -12,6 +12,7 @@ Markers List:
         </div>
         <div [attr.id]="'collapse' + i" class="collapse" [attr.aria-labelledby]="'heading' + i" data-parent="#accordion">
             <div *ngIf="selectedMarker == marker" class="card-body">
+                {{marker.userID}}
               <app-remove-marker [marker]="marker" [userID]="userID" (onRemoved) ="removed($event)"></app-remove-marker>
             </div>
         </div>

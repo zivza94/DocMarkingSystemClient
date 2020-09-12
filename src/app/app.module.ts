@@ -35,6 +35,7 @@ import { ShareManagerComponent } from './SharingComponents/share-manager/share-m
 import { CreateShareComponent } from './SharingComponents/create-share/create-share.component';
 import { AlertSystemComponent } from './alert-system/alert-system.component'
 import { MatDialogModule } from '@angular/material/dialog';
+import { LogoutComponent } from './logout/logout.component';
 
 @NgModule({
   declarations: [
@@ -55,7 +56,8 @@ import { MatDialogModule } from '@angular/material/dialog';
     RemoveShareComponent,
     ShareManagerComponent,
     CreateShareComponent,
-    AlertSystemComponent
+    AlertSystemComponent,
+    LogoutComponent
     ],
   imports: [
     BrowserModule,

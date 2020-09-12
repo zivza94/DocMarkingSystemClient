@@ -7,6 +7,8 @@ import { FormGroup } from '@angular/forms';
 import { Location } from '@angular/common';
 import { AlertService } from 'src/app/Services/alert.service';
 import { CreateShareRequest } from 'src/app/DTO/Sharing/create-share-request';
+import { Router } from '@angular/router';
+import { AuthService } from 'src/app/Services/auth.service';
 
 @Component({
   selector: 'app-create-share',
@@ -20,20 +22,32 @@ export class CreateShareComponent implements OnInit {
   subscriptions:Array<Subscription> = new Array<Subscription>()
   createShare:FormGroup
   constructor(private sharedDataService:SharedDataService,private createShareService:CreateShareService,
-    private location:Location, private alertService:AlertService) { }
+    private location:Location, private alertService:AlertService,private router:Router
+    ,private authService:AuthService) { }
 
   ngOnDestroy(): void{
     this.subscriptions.forEach( subscription => subscription.unsubscribe())
   }
   ngOnInit(): void {
+    if(!this.authService.isLoggedIn){
+      this.router.navigate['home']
+    }
     this.subscriptions.push(
       this.sharedDataService.currentUserID.subscribe(
-        userID => this.userID = userID
+        userID => {
+          this.userID = userID
+        }
       )
     )
     this.subscriptions.push(
       this.sharedDataService.currentDoc.subscribe(
-        doc => this.docID = doc.docID
+        doc => {
+          if(doc == undefined){
+            this.router.navigate(['login'])
+          }else{
+            this.docID = doc.docID
+          }
+        }
       )
     )
     this.subscriptions.push(
@@ -53,7 +67,7 @@ export class CreateShareComponent implements OnInit {
     )
     this.subscriptions.push(
       this.createShareService.onResponseError.subscribe(
-        response => this.alertService.openModal("Create share" , response.message)
+        response => this.alertService.openModal("Create share" , "Server:" + response.message)
       )
     )
   }

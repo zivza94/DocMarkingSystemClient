@@ -76,7 +76,6 @@ export class MarkersListComponent implements OnInit {
   removed(event){
     console.log(event.markerID +" has been removed")
     this.onSelectMarker.emit(this.selectedMarker)
-    this.getMarkers()
   }
 
 }

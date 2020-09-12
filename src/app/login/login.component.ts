@@ -6,6 +6,7 @@ import { LoginRequest } from '../DTO/Users/Login/login-request';
 import {SharedDataService} from "../Services/shared-data.service";
 import { Subscription } from 'rxjs';
 import {AlertService} from 'src/app/Services/alert.service'
+import { AuthService } from '../Services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -19,7 +20,7 @@ export class LoginComponent implements OnInit {
   userID: string
   subscriptions:Array<Subscription> = new Array<Subscription>()
   constructor(private loginService:LoginService, private router:Router, private sharedDataService:SharedDataService,
-    private alertService:AlertService) {
+    private alertService:AlertService,private authService:AuthService) {
     console.log("Constructor")
    }
   
@@ -27,6 +28,9 @@ export class LoginComponent implements OnInit {
     this.subscriptions.forEach( subscription => subscription.unsubscribe())
   }
   ngOnInit(): void {
+    if(this.authService.isLoggedIn){
+      this.router.navigate(['documents'])
+    }
     this.loginForm = new FormGroup(
       {
         userID: new FormControl()
@@ -36,7 +40,7 @@ export class LoginComponent implements OnInit {
       response => {
 
         console.log("Login Ok", response.request)
-        this.sharedDataService.changeUserID(response.request.userID)
+        this.authService.login(response.request.userID)
         this.router.navigate(['documents'])
       },
       () =>console.log("complete loginOK")

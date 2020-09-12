@@ -1,3 +1,4 @@
+<body>
 <h1> Hello    {{userID}}</h1>
 <h2> Welcome to documents list</h2>
 <div class="fixed-top backbtn float-right">
@@ -20,7 +21,14 @@
                 <div *ngIf="selectedDoc == doc" class="card-body">
                   <button class="btn btn-primary editbtn" (click)="editDocument(doc)"> <mat-icon>edit</mat-icon></button>
                   <button class="btn btn-secondary sharebtn" [disabled]="doc.userID != userID" (click)="shareDocument(doc)"><mat-icon>share</mat-icon></button>
-                  <app-remove-document [doc]="doc" [userID]="userID" (onRemoved) ="removed($event)"></app-remove-document>
+                  <ng-template *ngIf="doc.userID == userID; then thenBlock else elseBlock"></ng-template>
+                  <ng-template #thenBlock>
+                    <app-remove-document [doc]="doc" [userID]="userID" (onRemoved) ="removedDoc($event)"></app-remove-document>
+                  </ng-template>
+                  <ng-template #elseBlock>
+                    <app-remove-share [userID]="userID" [docID]="doc.docID" [ownerID]="userID" (onRemoved) ="removedShare($event)"></app-remove-share>
+                  </ng-template>
+                  
                 </div>
             </div>
             
@@ -31,4 +39,5 @@
 <div class="fixed-bottom addbtn float-right">
     <button type="button " class="btn btn-primary float-right add-btn" routerLink="/adddocument">Add Document</button>
 </div>
+</body>
 
