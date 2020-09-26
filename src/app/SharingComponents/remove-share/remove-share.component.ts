@@ -22,7 +22,7 @@ export class RemoveShareComponent implements OnInit {
 
   ngOnDestroy(): void{
     this.subscriptions.forEach( subscription => subscription.unsubscribe())
-    console.log("destroy remove share: " + this.share.docID)
+    //console.log("destroy remove share: " + this.share.docID)
   }
   ngOnInit(): void {
     this.subscriptions.push(this.removeShareService.onRemoveShareOK.subscribe(

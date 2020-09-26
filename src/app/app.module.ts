@@ -36,6 +36,10 @@ import { CreateShareComponent } from './SharingComponents/create-share/create-sh
 import { AlertSystemComponent } from './alert-system/alert-system.component'
 import { MatDialogModule } from '@angular/material/dialog';
 import { LogoutComponent } from './logout/logout.component';
+import { ColorPickerComponent} from './Color/color-picker/color-picker.component'
+import { ColorSliderComponent } from './Color/color-slider/color-slider.component';
+import { ColorPaletteComponent } from './Color/color-palette/color-palette.component';
+import { CurrentlyViewingComponent } from './DocumentsComponents/currently-viewing/currently-viewing.component';
 
 @NgModule({
   declarations: [
@@ -57,7 +61,11 @@ import { LogoutComponent } from './logout/logout.component';
     ShareManagerComponent,
     CreateShareComponent,
     AlertSystemComponent,
-    LogoutComponent
+    LogoutComponent,
+    ColorSliderComponent,
+    ColorPaletteComponent,
+    ColorPickerComponent,
+    CurrentlyViewingComponent
     ],
   imports: [
     BrowserModule,

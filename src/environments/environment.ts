@@ -4,12 +4,15 @@
 
 export const environment = {
   production: false,
-  markerWs: "wss:localhost:5001/ws/marker",
-  shareWS: "wss:localhost:5001/ws/share",
-  userApi: "https:localhost:5001",
-  documentApi: "https:localhost:5001",
-  markerApi: "https:localhost:5001",
-  sharingApi: "https:localhost:5001"
+  markerWs: "wss://localhost:5001/ws/marker",
+  shareWS: "wss://localhost:5001/ws/sharing",
+  documentWS: "wss://localhost:5001/ws/document",
+  viewingWS: "wss://localhost:5001/ws/view",
+  liveDrawWS: "wss://localhost:5001/ws/liveDraw",
+  userApi: "https://localhost:5001",
+  documentApi: "https://localhost:5001",
+  markerApi: "https://localhost:5001",
+  sharingApi: "https://localhost:5001"
 
 };
 

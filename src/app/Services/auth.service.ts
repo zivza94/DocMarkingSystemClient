@@ -23,7 +23,7 @@ export class AuthService {
     sessionStorage.removeItem('userID')
   }
   get isLoggedIn(){
-    var retval = JSON.parse(sessionStorage.getItem('loggedIn') || this.loggedInStatus.toString())
+    var retval = JSON.parse(sessionStorage.getItem('loggedIn') || this.loggedInStatus.getValue().toString())
     if(retval == true){
       this.sharedDataService.changeUserID(sessionStorage.getItem('userID'))
     }

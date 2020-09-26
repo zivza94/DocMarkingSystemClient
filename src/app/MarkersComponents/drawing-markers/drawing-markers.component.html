@@ -1,25 +1,50 @@
 <div #container>
-    <div #row>
+    <div class="row">
         <div class="col-md-4">
-            <button #btn (click)="selectShape('Ellipse')">Ellipse</button>
-            <button #btn (click)="selectShape('Rectangle')">Rectangle</button>
-            <br/>
-            <br/>
-            <br/>    
+            <button #ellipseBtn (click)="selectShape('Ellipse')">Ellipse</button>
+            <button #rectangleBtn (click)="selectShape('Rectangle')">Rectangle</button>
         </div>
     </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="align-self-start">
+                <label for="foreGround"> ForeGround color</label>
+            </div>
+            <div class="align-self-center" >
+                &nbsp;Color: <input  #fgColor type="color" id="foreGround" name="foreGround" value="#000000">
+            </div>
+            
+            <div class="align-self-end">
+                &nbsp;Transperency: <input  #fgTrans type="range" id="foreTrans" min="0" max="100" value="100">
+                <output for="foreTrans"></output>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="align-self-start ">
+                <label for="backGround"> BackGround color</label>
+            </div>
+            <div class="align-self-center" >
+                &nbsp;Color: <input  #bgColor type="color" id="backGround" name="backGround" value="#010000">
+            </div>
+            <div class="align-self-end">
+                &nbsp;Transperency: <input  #bgTrans type="range" id="backTrans" min="0" max="100" value="0">
+                <output for="backTrans" ></output>
+            </div>
+        </div>
+    </div>
+    
     <div class ="row"></div>
     <div class="row">
         <div class="canvasCol col">
-            <div #container id="container"  style = 'height:800px;width:800px; background-color: powderblue'>
-                <img [src]="createImgPath()" alt="profile picture" style="width:800px; height:800px;">
+            <div #container id="container"  style = 'height:700px;width:800px; background-color: powderblue'>
+                <img [src]="createImgPath()" alt="profile picture" style="width:800px; height:700px;">
                 <canvas #shapeCanvas class='canvas' ></canvas>
                 <canvas #drawingCanvas class='canvas' ></canvas>
             </div>
         </div>
 
         <div class="col">
-            <app-markers-list (onUpdateMarkers) = "updateMarkers($event)" (onSelectMarker) = "selectMarker($event)"></app-markers-list>
+            <app-markers-list [doc]="doc" [userID]="userID" (onUpdateMarkers) = "getMarkers($event)" (onSelectMarker) = "selectMarker($event)"></app-markers-list>
         </div>
     </div>
 </div>

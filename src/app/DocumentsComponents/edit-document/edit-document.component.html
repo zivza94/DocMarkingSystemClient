@@ -1,6 +1,20 @@
+
 <div class="fixed-top backbtn float-right">
     <button type="button " class="btn btn-primary float-right back-btn" (click)="goBack()">Go back</button>
 </div>
-<app-drawing-markers></app-drawing-markers>
+<div class="container">
+    <div class="row">
+        <app-currently-viewing [doc]="doc" [userID]="userID"></app-currently-viewing>
+    </div>
+    <div class="row">
+        <app-drawing-markers [doc]="doc" [userID]="userID"></app-drawing-markers>
+    </div>
+</div>
+<div>
+    
+</div>
+<div>
+    
+</div>
 
 

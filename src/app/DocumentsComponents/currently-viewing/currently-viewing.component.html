@@ -1,0 +1,8 @@
+<div>  
+    <h4>Currently viewing "{{doc.documentName}}":</h4>   
+    <div class="scrollbar scrollbar-primary"> 
+        <ng-container *ngFor="let user of users; let i = index" class="group">
+            <button [disable]="true" class=" btn-primary">{{user}}</button>
+        </ng-container>  
+    </div>
+</div>

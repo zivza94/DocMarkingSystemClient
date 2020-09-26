@@ -22,7 +22,7 @@ export class ShareManagerComponent implements OnInit {
   userID:string
   shares:Array<Share>
   subscriptions:Array<Subscription> = new Array<Subscription>()
-  //subject = new WebSocket(environment.shareWS)
+  subject = new WebSocket(environment.shareWS)
   @Output() onUpdateShares = new EventEmitter();
   @Output() onSelectShare = new EventEmitter();
 
@@ -31,13 +31,13 @@ export class ShareManagerComponent implements OnInit {
               ,private authService:AuthService) { }
   ngOnDestroy(): void{
     this.subscriptions.forEach( subscription => subscription.unsubscribe())
-    //this.subject.close()
+    this.subject.close()
   }
   ngOnInit(): void {
-    /*this.subject.onmessage = (response)=>{
+    this.subject.onmessage = (response)=>{
       console.log(response.data)
       this.getShares()
-    }*/
+    }
     if(!this.authService.isLoggedIn){
       this.router.navigate['home']
     }

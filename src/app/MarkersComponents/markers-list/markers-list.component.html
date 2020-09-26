@@ -1,12 +1,14 @@
 Markers List:
 <br/>
 <div id="accordion">
+    <div class="scrollbar scrollbar-primary">
+        <div class="force-overflow">
     <div class="card" *ngFor="let marker of markers; let i = index">
         <div class="card-header" [attr.id]="'heading' +i">
             <h5 class="mb-0">
             <button class="btn btn-link collapsed" (click) = "onSelect(marker)" data-toggle="collapse" [attr.data-target]="'#collapse'+ i" 
             aria-expanded="false" [attr.aria-controls]="'collapse' +i">
-                {{marker.markerID}}
+                {{marker.markerType}}: {{marker.markerLocation.pointX}}, {{marker.markerLocation.pointY}}
             </button>
             </h5>
         </div>
@@ -17,6 +19,8 @@ Markers List:
             </div>
         </div>
         
+    </div>
+        </div>
     </div>
     
 </div>
