@@ -12,11 +12,14 @@ import { Marker } from 'src/app/DTO/Markers/marker';
 import { AlertService } from '../alert.service';
 import { MarkerWSService } from './marker-ws.service';
 import { LiveDrawWSService } from './live-draw-ws.service'
+import { NewLiveDrawRequest } from 'src/app/DTO/Markers/LiveDraw/new-live-draw-request'
+import { EndLiveDrawRequest } from 'src/app/DTO/Markers/LiveDraw/end-live-draw-request'
 
 @Injectable({
   providedIn: 'root'
 })
 export class DrawingService {
+  private usersFreeDraw = new Map<string,Array<Line>>()
   private markerIDToShape = new Map<string,MarkerShape>()
   docID:string
   userID:string
@@ -62,7 +65,8 @@ export class DrawingService {
   destroy(){
     this.markerWSService.disconnect()
   }
-  constructor(private createMarkerService:CreateMarkerService,private alertService:AlertService,private markerWSService:MarkerWSService) { 
+  constructor(private createMarkerService:CreateMarkerService,private alertService:AlertService,private markerWSService:MarkerWSService,
+    private liveDrawWSService:LiveDrawWSService) { 
     //create marker service response
     this.createMarkerService.onCreateMarkerOK.subscribe(
       response => console.log(response.request.markerID + " has created")
@@ -99,14 +103,44 @@ export class DrawingService {
   setData(docID:string,userID:string){
     this.docID = docID
     this.userID = userID
+    this.liveDrawWSService.connect(userID,docID)
+    this.liveDrawWSService.onNewDraw.pipe(
+      map(response => {
+        var start = new point(response.line.start.X,response.line.start.Y)
+        var end = new point(response.line.end.X,response.line.end.Y)
+        var line = new Line(start,end)
+        line.fgColor = response.line.fgColor
+        return [line,response.userID]
+      })
+    ).subscribe(([line,userID]) => this.newDraw(userID,line))
+    this.liveDrawWSService.onEndDraw.subscribe(response => this.endDraw(response.userID))
+
   }
-  
+  newDraw(userID:string,line:Line){
+    var lines = this.usersFreeDraw.get(userID)
+    if(lines == undefined){
+      lines = new Array<Line>()
+    }
+    lines.push(line)
+    this.usersFreeDraw.set(userID,lines)
+    this.EventsSubjects["polyDraw"].next(line)
+  }
+  endDraw(userID:string){
+    this.usersFreeDraw.delete(userID)
+    this.updateShapes()
+  }
+  updateShapes(){
+    var markers = Array.from(this.markerIDToShape.values())
+    var freeDraws = [].concat.apply([],Array.from(this.usersFreeDraw.values()))
+    var shapes = freeDraws.concat(markers)
+    this.EventsSubjects["updateShapes"].next(shapes)
+  }
   updateMarkers(event){
     this.markerIDToShape = new Map<string,MarkerShape>()
     event.map(marker => {
       this.addMarker(marker)
     });
-    this.EventsSubjects["updateShapes"].next(Array.from(this.markerIDToShape.values()))
+    this.updateShapes()
   }
   selectShape(shape:string){
     this.markerShape = this.shapeFactory(shape)
@@ -117,7 +151,7 @@ export class DrawingService {
     if(this.selectedMarker == marker){
       this.selectedMarker = null
       this.markerIDToShape.get(marker.markerID).normal()
-      this.EventsSubjects["updateShapes"].next(Array.from(this.markerIDToShape.values()))
+      this.updateShapes()
       
     }else {
       if(this.selectedMarker != undefined){
@@ -125,7 +159,7 @@ export class DrawingService {
       }
       this.selectedMarker = marker
       this.markerIDToShape.get(marker.markerID).bold()
-      this.EventsSubjects["updateShapes"].next(Array.from(this.markerIDToShape.values()))
+      this.updateShapes()
     }
     
   }
@@ -176,15 +210,25 @@ export class DrawingService {
     var xcanvas = evt.clientX - rect.left
     var ycanvas = evt.clientY - rect.top
     //update free draw
-    var from:point = new point(xcanvas-evt.movementX,ycanvas-evt.movementY)
-    var to:point = new point(xcanvas,ycanvas)
+    var from:point = new point(Math.floor(xcanvas-evt.movementX),Math.floor(ycanvas-evt.movementY))
+    var to:point = new point(Math.floor(xcanvas),Math.floor(ycanvas))
     var line = new Line(from,to)
     line.fgColor = this.fgColor + this.fgTrans
     this.EventsSubjects["freeDraw"].next(line)
     //update poly
     this.poly.next(new point(xcanvas-evt.movementX,ycanvas-evt.movementY))
+    //send to server 
+    this.sendLine(line)
   }
-  
+  sendLine(line:Line){
+    var request = new NewLiveDrawRequest()
+    request.line = line
+    this.liveDrawWSService.send(request)
+  }
+  sendEndFreeDraw(){
+    var request = new EndLiveDrawRequest()
+    this.liveDrawWSService.send(request)
+  }
   ngAfterViewInit(drawingCanvas,fgColorElem,bgColorElem,fgTransElem,bgTransElem){
     this.drawingCanvas = drawingCanvas
     // mouse events
@@ -207,6 +251,7 @@ export class DrawingService {
        
     ).subscribe(shapePoly=>{
       this.EventsSubjects["finishDraw"].next("done")
+      this.sendEndFreeDraw()
       this.createShape(shapePoly)
       
     })
@@ -244,7 +289,7 @@ export class DrawingService {
       this.selectedMarker = null
     }
     if(this.markerIDToShape.delete(markerID)){
-      this.EventsSubjects["updateShapes"].next(Array.from(this.markerIDToShape.values()))
+      this.updateShapes()
     }
     
   }

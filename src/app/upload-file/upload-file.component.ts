@@ -2,6 +2,7 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { HttpClient, HttpEventType } from '@angular/common/http';
 import { UploadFileRequest } from '../DTO/upload-file-request';
 import { UploadFileService } from '../Services/UploadFile/upload-file.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-upload-file',
@@ -48,7 +49,7 @@ export class UploadFileComponent implements OnInit {
     
   }
   public createImgPath = () => {
-    var image = `https://localhost:5001/${this.filePath}`;
+    var image = environment.documentApi+'/'+this.filePath
     return image
   }
 

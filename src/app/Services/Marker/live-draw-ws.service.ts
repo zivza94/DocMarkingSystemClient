@@ -30,6 +30,6 @@ export class LiveDrawWSService {
     this.subject.close()
   }
   send(request:any){
-    this.subject.send(request)
+    this.subject.send(JSON.stringify(request))
   }
 }

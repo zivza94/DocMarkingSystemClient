@@ -11,6 +11,7 @@ import { Location } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { AlertService } from 'src/app/Services/alert.service';
 import {AuthService} from 'src/app/Services/auth.service'
+import { environment } from 'src/environments/environment';
 @Component({
   selector: 'app-documents-list',
   templateUrl: './documents-list.component.html',
@@ -66,7 +67,7 @@ export class DocumentsListComponent implements OnInit {
     this.selectedDoc = doc
   }
   public createImgPath = (imageURL:string) => {
-    var image = `https://localhost:5001/${imageURL}`;
+    var image = environment.documentApi+'/' + imageURL
     return image
   }
   removedDoc(event){
